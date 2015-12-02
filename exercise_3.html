@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Perrorist traffic lights</h1>
+
+<script type="text/javascript">
+
+  var light_order = ["red", "amber-red", "green", "amber"];
+  var light_position =  0;
+  var number_of_positions = light_order.length;
+  var t;
+  console.log("Number of positions");
+  console.log(number_of_positions);
+
+  function changeLights() {
+    if (light_position == number_of_positions - 1) {
+      light_position = 0;
+    } else {
+    light_position = light_position + 1;
+    }
+    displayLights(light_order[light_position]);
+    console.log(light_order[light_position]);
+  }
+  
+  function displayLights(light_colour) {
+    //alert("You pressed " + light_colour);
+    document.getElementById('lights').src = 'images/traffic-' + light_colour +'.jpg'; 
+  }
+
+  function startSequence() {
+     t =  setTimeout(changeLights(), 1000);
+  }
+  function stopSequence() {
+     t =  clearTimeout(changeLights(), 1000);
+  }
+
+</script>
+
+<img id="lights" src="images/traffic-red.jpg"></div>
+
+
+
+<button type="button" onclick="displayLights('green')"> Set lights green </button>
+<button type="button" onclick="displayLights('red') "> Set lights red </button>
+<button type="button" onclick="displayLights('amber-red') "> Set lights amber-red </button>
+<button type="button" onclick="displayLights('amber')"> Set lights amber </button>
+<button type="button" onclick="changeLights()"> Change next lights </button>
+
+<button type="button" onclick="startSequence()"> Automagical traffic lights </button>
+
+</body>
+</html>
+
+
+021100
+
