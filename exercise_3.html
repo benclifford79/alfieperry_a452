@@ -1,57 +1,118 @@
 <!DOCTYPE html>
 <html>
-<body>
-
-<h1>Perrorist traffic lights</h1>
+<head>
 
 <script type="text/javascript">
 
   var light_order = ["red", "amber-red", "green", "amber"];
+  var light_delay_time_list = [7000, 2000, 5000, 7000];
   var light_position =  0;
   var number_of_positions = light_order.length;
   var t;
-  console.log("Number of positions");
-  console.log(number_of_positions);
+  // console.log(number_of_positions);
 
+  // changeLights counts the number of light positions and adds one to the current position.
+  // If we get to number_of_positions we reset to zero and start counting up again.
+  // It returns the next position.
   function changeLights() {
     if (light_position == number_of_positions - 1) {
       light_position = 0;
     } else {
     light_position = light_position + 1;
     }
-    displayLights(light_order[light_position]);
-    console.log(light_order[light_position]);
+    displayLights(light_order[light_position], light_delay_time_list[light_position]);
+
+    return light_position;
   }
   
-  function displayLights(light_colour) {
-    //alert("You pressed " + light_colour);
-    document.getElementById('lights').src = 'images/traffic-' + light_colour +'.jpg'; 
+  // displayLights updates the HTML elements on the page to display the correct image.  It takes a colour and finds the image with that colour to display.
+  function displayLights(light_colour, time_to_display_for) {
+    document.getElementById('background_image').src = 'images/background-' + light_colour +'.jpg';
+    document.getElementById('light_info').innerHTML = 'Displaying ' + light_colour + ' for ' + time_to_display_for + ' milliseconds.' ;
   }
 
+  // startSequence - Calls the change lights function,  then waits for xx milliseconds before calling itself again.
+  // It can look up the amount of time to wait for in the array 'light_delay_time'
   function startSequence() {
-     t =  setTimeout(changeLights(), 1000);
-  }
-  function stopSequence() {
-     t =  clearTimeout(changeLights(), 1000);
+     current_light_position = changeLights();
+     // light_delay_time = 1000;
+     light_delay_time_ms = light_delay_time_list[current_light_position]
+     var t =  setTimeout(startSequence, light_delay_time_ms);
   }
 
 </script>
 
-<img id="lights" src="images/traffic-red.jpg"></div>
+<style>
 
+#bg_div {
+  position: fixed; 
+  top: -50%; 
+  left: -50%; 
+  width: 200%; 
+  height: 200%;
+  z-index:1;
+}
+#bg_div img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
 
+#lights_div {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  z-index:2;
+}
 
-<button type="button" onclick="displayLights('green')"> Set lights green </button>
-<button type="button" onclick="displayLights('red') "> Set lights red </button>
-<button type="button" onclick="displayLights('amber-red') "> Set lights amber-red </button>
-<button type="button" onclick="displayLights('amber')"> Set lights amber </button>
-<button type="button" onclick="changeLights()"> Change next lights </button>
+#controls_div {
+  position: absolute; 
+  top: 50; 
+  left: 10; 
+  right: 0; 
+  bottom: 0;
+  z-index:2;
+  margin: 10;
+  width: 20pc;
+}
 
-<button type="button" onclick="startSequence()"> Automagical traffic lights </button>
+#controls_div button {
+  display: block;
+  width: 150px;
+  margin: auto;
+  margin-top: 2px;
+}
+
+</style>
+</head>
+<body>
+
+<div id="bg_div">
+  <img id="background_image" src="images/background-red.jpg" alt="">
+</div>
+  <div id="lights_div"><h1> Perrorist traffic lights </h1></div>
+
+<!-- <img id="lights" src="images/traffic-red.jpg"></div>
+<div id="light_info"> Starting on Red </div> -->
+
+<div id="controls_div">
+  <button type="button" onclick="displayLights('green')"> Set lights green </button>
+  <button type="button" onclick="displayLights('red') "> Set lights red </button>
+  <button type="button" onclick="displayLights('amber-red') "> Set lights amber-red </button>
+  <button type="button" onclick="displayLights('amber')"> Set lights amber </button>
+  <button type="button" onclick="changeLights()"> Change next lights </button>
+  <button type="button" onclick="startSequence()"> Automagical traffic lights </button>
+</div>
 
 </body>
 </html>
 
 
-021100
 
